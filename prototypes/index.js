@@ -26,13 +26,13 @@ const kittyPrompts = {
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
 
-    const results = kitties.filter(kitty => {
-    if(kitty.color === "orange") {
-      let newArray = [];
-      newArray.push(kitty.name)
-      return results;
-    }
-  });
+    const result = kitties.reduce((catNames, kitty) => {
+      if(kitty.color === 'orange') {
+        catNames.push(kitty.name)
+      }
+      return catNames
+    }, []);
+    return result;
 
 
     // Annotation:
@@ -42,9 +42,10 @@ const kittyPrompts = {
   sortByAge() {
     // Sort the kitties by their age
 
-    const results = kitties.sort(function(a, b){
+    const result = kitties.sort((a, b) => {
       return b.age - a.age;
-    })
+    });
+    return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -64,9 +65,10 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const ageByTwo = kitties.forEach(kitty => {
-   return kitty.age += 2;
- });
+    const result = kitties.filter(kitty => {
+      return kitty.age += 2;
+    });
+    return result;
 }
 };
 
@@ -98,14 +100,11 @@ const clubPrompts = {
     // }
 
 
-    const result = clubs.reduce((acc, club) => {
-      club.members.forEach((member) => {
-        acc[member] = [];
-      }
-      acc[member].push(club.club);
+    const result = clubs.map(club => {
+      club.members.forEach(member => {
+
+      })
     });
-      return acc;
-    }, {});
     return result;
 
     // Annotation:
@@ -141,11 +140,11 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = mods.reduce((acc, mod) => {
-
-    acc.push({mod: mod.mod, studentsPerMod: mod.students / mod.instructors});
-    return acc;
-  }, []);
+    const result = mods.reduce((studentObj, mod) => {
+      studentObj.push({mod: mod.mod, studentsPerInstructor: mod.students / mod.instructors});
+    return studentObj
+    }, []);
+    return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -179,10 +178,10 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-      const result = cakes.reduce((acc, cake) => {
-        acc.push({flavor: cake.cakeFlavor, inStock: cake.inStock});
-        return acc;
-      }, []);
+    const result = cakes.map(cake => {
+      return ({flavor: cake.cakeFlavor, inStock: cake.inStock})
+    });
+    return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -211,10 +210,9 @@ const cakePrompts = {
 
 
     const result = cakes.filter(cake => {
-      if(cake.inStock > 0) {
-        return cake;
-      }
+      return cake.inStock > 0;
     });
+    return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -224,10 +222,11 @@ const cakePrompts = {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = cakes.reduce((acc, cake) => {
-      return acc += cake.inStock;
+    const result = cakes.reduce((cakeCounter, cake) => {
+      cakeCounter += cake.inStock;
+      return cakeCounter
     }, 0);
-
+    return result;
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -237,8 +236,15 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const results = cakes.map((cake) => {
-      return `${cake.toppings}`;
+    const result = cakes.reduce((uniqueToppings, cake) => {
+      cake.toppings.forEach(topping => {
+      if(!uniqueToppings.includes(topping)) {
+        uniqueToppings.push(topping);
+      }
+    })
+      return uniqueToppings
+    }, []);
+    return result;
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -254,7 +260,15 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((groceryList, cake) => {
+      cake.toppings.forEach(topping => {
+        if(!groceryList[topping]) {
+          groceryList[topping] = 0;
+        }
+          groceryList[topping] ++;
+      })
+    return groceryList
+    }, {});
     return result;
 
     // Annotation:
@@ -289,9 +303,11 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = classrooms.filter(classroom => {
-    return classroom.program === "FE";
-})
+    const result = classrooms.filter(room => {
+      return room.program === 'FE';
+    });
+    return result;
+
   },
 
   totalCapacities() {
@@ -302,7 +318,7 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = '';
     return result;
 
     // Annotation:
@@ -312,10 +328,11 @@ const classPrompts = {
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = classrooms.sort(function(a, b) {
-    return a.capacity - b.capacity;
-});
-};
+    const result = 'REPLACE WITH YOUR RESULT HERE';
+    return result;
+
+  }
+}
 
 
 
@@ -354,10 +371,9 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = nationalParks.reduce((acc, nationalPark) => {
-    acc.push({ [nationalPark.location]: nationalPark.name});
-    return acc;
-    }, []);
+    const result = 'REPLACE WITH YOUR RESULT HERE';
+    return result;
+
 
     // Annotation:
     // Write your annotation here as a comment
