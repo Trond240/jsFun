@@ -318,7 +318,14 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = '';
+    const result = classrooms.reduce((programCapacities, room) => {
+      if(room.program === 'FE') {
+        programCapacities.feCapacity += room.capacity;
+      } else {
+        programCapacities.beCapacity += room.capacity;
+      }
+      return programCapacities
+    }, {feCapacity: 0, beCapacity:0});
     return result;
 
     // Annotation:
@@ -328,7 +335,9 @@ const classPrompts = {
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((a, b) => {
+      return a.capacity - b.capacity;
+    });
     return result;
 
   }
@@ -354,7 +363,14 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((parkList, park) => {
+      if(park.visited === true) {
+       parkList.parksVisited.push(park.name)
+     } else {
+       parkList.parksToVisit.push(park.name)
+     }
+      return parkList;
+    }, {parksToVisit: [], parksVisited: []});
     return result;
 
     // Annotation:
@@ -371,7 +387,10 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((stateList, park) => {
+      stateList.push({[park.location]: park.name})
+      return stateList
+    }, []);
     return result;
 
 
@@ -395,7 +414,14 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((activityList, park) => {
+        park.activities.forEach(activity => {
+          if(!activityList.includes(activity)) {
+            activityList.push(activity);
+          }
+        })
+      return activityList;
+    }, []);
     return result;
 
     // Annotation:
@@ -422,7 +448,10 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((beerCount, brew) => {
+        beerCount += brew.beers.length;
+      return beerCount;
+    }, 0);
     return result;
 
     // Annotation:
@@ -438,7 +467,10 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((brewList, brew) => {
+      brewList.push({name: brew.name, beerCount: brew.beers.length})
+      return brewList
+    }, []);
     return result;
 
     // Annotation:
@@ -450,7 +482,16 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((beerList, brew) => {
+      brew.beers.forEach(beer => {
+        if(!beerList.includes(beer)) {
+          beerList.push(beer);
+        }
+      })
+    return beerList.sort((a,b) => {
+      return b.abv - a.abv
+    })
+  }, [])[0];
     return result;
 
     // Annotation:
@@ -498,7 +539,14 @@ const turingPrompts = {
     //  { name: 'Robbie', studentCount: 18 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((teacherList, instructor) => {
+        cohorts.forEach(cohort => {
+          if(instructor.module === cohort.module) {
+            teacherList.push({name: instructor.name, studentCount: cohort.studentCount})
+          }
+        })
+      return teacherList
+    }, []);
     return result;
 
     // Annotation:
@@ -512,7 +560,13 @@ const turingPrompts = {
     // cohort1804: 10.5
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cohorts.reduce((cohortObj, hort) => {
+      let teaches = instructors.filter(instructor => {
+        return hort.module === instructor.module;
+      })
+      cohortObj[`cohort${hort.cohort}`] = hort.studentCount / teaches.length;
+      return cohortObj
+    }, {});
     return result;
 
     // Annotation:
