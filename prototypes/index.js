@@ -100,11 +100,15 @@ const clubPrompts = {
     // }
 
 
-    const result = clubs.map(club => {
+    const result = clubs.reduce((clubObj, club) => {
       club.members.forEach(member => {
-
+        if(!clubObj[member]) {
+          clubObj[member] = [];
+        }
+         clubObj[member].push(club.club)
       })
-    });
+      return clubObj
+    }, {});
     return result;
 
     // Annotation:
@@ -588,7 +592,18 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((instructorObj, instructor) => {
+      let modArray = cohorts.reduce((modList, cohort) => {
+        cohort.curriculum.forEach(subject => {
+          if(instructor.teaches.includes(subject) && !modList.includes(cohort.module)) {
+            modList.push(cohort.module);
+          }
+        })
+        return modList
+      }, [])
+      instructorObj[instructor.name] = modArray;
+      return instructorObj;
+    }, {});
     return result;
 
     // Annotation:
@@ -605,7 +620,15 @@ const turingPrompts = {
     //   recursion: [ 'Pam', 'Leta' ]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((curriculumList, instructor) => {
+      instructor.teaches.forEach(topic => {
+        if(!curriculumList[topic]) {
+          curriculumList[topic] = [];
+        }
+        curriculumList[topic].push(instructor.name)
+      })
+    return curriculumList
+    }, {});
     return result;
 
     // Annotation:
@@ -640,7 +663,13 @@ const bossPrompts = {
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = Object.keys(bosses).reduce((loyaltyArray, boss) => {
+      return sidekicks.filter(side => {
+        return side.boss === bosses[boss].name
+      })
+      loyaltyArray.push({bossName: bosses[boss].name})
+      return loyaltyArray
+    }, []);
     return result;
 
     // Annotation:
@@ -753,7 +782,14 @@ const ultimaPrompts = {
     // Return the sum of the amount of damage for all the weapons that our characters can use
     // Answer => 113
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = Object.keys(weapons).reduce((allDamage, weapon) => {
+       characters.forEach(character => {
+        console.log(character.weapons)
+      })
+      allDamage += weapons[weapon].damage;
+      return allDamage;
+    }, 0)
+
     return result;
 
     // Annotation:
