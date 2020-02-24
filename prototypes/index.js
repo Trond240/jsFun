@@ -665,9 +665,10 @@ const bossPrompts = {
 
     const result = Object.keys(bosses).reduce((loyaltyArray, boss) => {
       return sidekicks.filter(side => {
-        return side.boss === bosses[boss].name
+        if(side.boss === bosses[boss].name) {
+          console.log(side.loyaltyToBoss)
+        }
       })
-      loyaltyArray.push({bossName: bosses[boss].name})
       return loyaltyArray
     }, []);
     return result;
@@ -711,7 +712,10 @@ const astronomyPrompts = {
     //     color: 'red' }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+    const result = stars.filter(star => {
+      return constellations['orion'].names.includes(star.constellation);
+    });
     return result;
 
     // Annotation:
@@ -729,7 +733,13 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.reduce((starList, star) => {
+      if(!starList[star.color]) {
+        starList[star.color] = [];
+      }
+      starList[star.color].push(star);
+      return starList
+    }, {});
     return result;
 
     // Annotation:
@@ -750,8 +760,16 @@ const astronomyPrompts = {
     //    "Orion",
     //    "The Little Dipper" ]
 
+    let sortedStars = stars.sort((a, b) => {
+      return a.visualMagnitude - b.visualMagnitude;
+    })
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = sortedStars.reduce((starList, star) => {
+       if(!starList.includes(star.constellation)) {
+         starList.push(star.constellation)
+       }
+      return starList
+    }, []);
     return result;
 
     // Annotation:
